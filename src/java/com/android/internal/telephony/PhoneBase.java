@@ -111,6 +111,8 @@ public abstract class PhoneBase extends Handler implements Phone {
     // Key used to read/write "disable data connection on boot" pref (used for testing)
     public static final String DATA_DISABLED_ON_BOOT_KEY = "disabled_on_boot_key";
 
+    private static final String VOICE_CAPABLE_PROPERTY = "persist.sys.voice.capable";
+
     /* Event Constants */
     protected static final int EVENT_RADIO_AVAILABLE             = 1;
     /** Supplementary Service Notification received. */
@@ -364,8 +366,9 @@ public abstract class PhoneBase extends Handler implements Phone {
         * This will be false on "data only" devices which can't make voice
         * calls and don't support any in-call UI.
         */
-        mIsVoiceCapable = mContext.getResources().getBoolean(
-                com.android.internal.R.bool.config_voice_capable);
+        //mIsVoiceCapable = mContext.getResources().getBoolean(
+        //        com.android.internal.R.bool.config_voice_capable);
+        mIsVoiceCapable = SystemProperties.getBoolean(VOICE_CAPABLE_PROPERTY, true);
 
         /**
          *  Some RIL's don't always send RIL_UNSOL_CALL_RING so it needs

@@ -25,6 +25,7 @@ import android.os.Message;
 import android.os.Registrant;
 import android.os.RegistrantList;
 import android.os.SystemClock;
+import android.os.SystemProperties;
 import android.telephony.CellInfo;
 import android.telephony.ServiceState;
 import android.telephony.SignalStrength;
@@ -195,6 +196,8 @@ public abstract class ServiceStateTracker extends Handler {
         "tg", // Togo
     };
 
+    private static final String VOICE_CAPABLE_PROPERTY = "persist.sys.voice.capable";
+
     private class CellInfoResult {
         List<CellInfo> list;
         Object lockObj = new Object();
@@ -217,8 +220,9 @@ public abstract class ServiceStateTracker extends Handler {
         mPhoneBase = phoneBase;
         mCellInfo = cellInfo;
         mCi = ci;
-        mVoiceCapable = mPhoneBase.getContext().getResources().getBoolean(
-                com.android.internal.R.bool.config_voice_capable);
+        //mVoiceCapable = mPhoneBase.getContext().getResources().getBoolean(
+        //        com.android.internal.R.bool.config_voice_capable);
+        mVoiceCapable = SystemProperties.getBoolean(VOICE_CAPABLE_PROPERTY, true);
         mUiccController = UiccController.getInstance();
         mUiccController.registerForIccChanged(this, EVENT_ICC_CHANGED, null);
         mCi.setOnSignalStrengthUpdate(this, EVENT_SIGNAL_STRENGTH_UPDATE, null);
