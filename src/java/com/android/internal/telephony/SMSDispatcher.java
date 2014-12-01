@@ -147,6 +147,8 @@ public abstract class SMSDispatcher extends Handler {
     /** Message sending queue limit */
     private static final int MO_MSG_QUEUE_LIMIT = 5;
 
+    private static final String SMS_CAPABLE_PROPERTY = "persist.sys.sms.capable";
+
     /**
      * Message reference for a CONCATENATED_8_BIT_REFERENCE or
      * CONCATENATED_16_BIT_REFERENCE message set.  Should be
@@ -190,8 +192,9 @@ public abstract class SMSDispatcher extends Handler {
         mContext.getContentResolver().registerContentObserver(Settings.Global.getUriFor(
                 Settings.Global.SMS_SHORT_CODE_RULE), false, mSettingsObserver);
 
-        mSmsCapable = mContext.getResources().getBoolean(
-                com.android.internal.R.bool.config_sms_capable);
+        //mSmsCapable = mContext.getResources().getBoolean(
+        //        com.android.internal.R.bool.config_sms_capable);
+        mSmsCapable = SystemProperties.getBoolean(SMS_CAPABLE_PROPERTY, true);
         mSmsSendDisabled = !SystemProperties.getBoolean(
                                 TelephonyProperties.PROPERTY_SMS_SEND, mSmsCapable);
         Rlog.d(TAG, "SMSDispatcher: ctor mSmsCapable=" + mSmsCapable + " format=" + getFormat()
