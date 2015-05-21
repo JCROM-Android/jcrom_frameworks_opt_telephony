@@ -167,6 +167,8 @@ final class GsmServiceStateTracker extends ServiceStateTracker {
     static final int PS_NOTIFICATION = 888;  // Id to update and cancel PS restricted
     static final int CS_NOTIFICATION = 999;  // Id to update and cancel CS restricted
 
+    private static final String VOICE_CAPABLE_PROPERTY = "persist.sys.voice.capable";
+
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -746,8 +748,9 @@ final class GsmServiceStateTracker extends ServiceStateTracker {
                     mNewSS.setState(regCodeToServiceState(regState));
                     mNewSS.setRilVoiceRadioTechnology(type);
 
-                    boolean isVoiceCapable = mPhoneBase.getContext().getResources()
-                            .getBoolean(com.android.internal.R.bool.config_voice_capable);
+                    //boolean isVoiceCapable = mPhoneBase.getContext().getResources()
+                    //        .getBoolean(com.android.internal.R.bool.config_voice_capable);
+                    boolean isVoiceCapable = SystemProperties.getBoolean(VOICE_CAPABLE_PROPERTY, true);
                     if ((regState == ServiceState.RIL_REG_STATE_DENIED_EMERGENCY_CALL_ENABLED
                          || regState == ServiceState.RIL_REG_STATE_NOT_REG_EMERGENCY_CALL_ENABLED
                          || regState == ServiceState.RIL_REG_STATE_SEARCHING_EMERGENCY_CALL_ENABLED
