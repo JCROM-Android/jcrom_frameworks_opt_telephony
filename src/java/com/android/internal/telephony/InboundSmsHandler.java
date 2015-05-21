@@ -187,6 +187,8 @@ public abstract class InboundSmsHandler extends StateMachine {
 
     private UserManager mUserManager;
 
+    private static final String SMS_CAPABLE_PROPERTY = "persist.sys.sms.capable";
+
     /**
      * Create a new SMS broadcast helper.
      * @param name the class name for logging
@@ -204,8 +206,9 @@ public abstract class InboundSmsHandler extends StateMachine {
         mResolver = context.getContentResolver();
         mWapPush = new WapPushOverSms(context);
 
-        boolean smsCapable = mContext.getResources().getBoolean(
-                com.android.internal.R.bool.config_sms_capable);
+        //boolean smsCapable = mContext.getResources().getBoolean(
+        //        com.android.internal.R.bool.config_sms_capable);
+        boolean smsCapable = SystemProperties.getBoolean(SMS_CAPABLE_PROPERTY, true);
         mSmsReceiveDisabled = !TelephonyManager.from(mContext).getSmsReceiveCapableForPhone(
                 mPhone.getPhoneId(), smsCapable);
 
